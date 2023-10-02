@@ -6,21 +6,34 @@ interface ArtcileEntryProps {
 }
 
 const NewsArticleEntry = ({
-  article: { webTitle, fields, apiUrl },
+  article: { webTitle, fields, apiUrl, webPublicationDate },
 }: ArtcileEntryProps) => {
+
   return (
-    <div className="flex flex-col h-80 rounded bg-gray-200">
-      <div className="flex flex-col align-center h-44 bg-orange-600 w-full">
-        <img
-          className="object-cover h-full"
-          src={fields?.thumbnail}
-          alt={webTitle}
-        />
+    <div className="flex flex-col h-80 rounded bg-gray-200 relative overflow-hidden">
+      {fields?.thumbnail && (
+        <div className="flex flex-col align-center h-44 w-full">
+          <img
+            className="object-cover h-full"
+            src={fields?.thumbnail}
+            alt={webTitle}
+          />
+        </div>
+      )}
+
+      <div className="p-3 font-medium text-sm">
+        <span className="mb-6">{webPublicationDate}</span>
+
+        <h2 className="mt-4">{webTitle}</h2>
       </div>
 
-      <h2>{webTitle}</h2>
-      <Link href={{ pathname: "/articleDetail", query: { url: apiUrl } }}>
-        Details
+      <Link
+        className="absolute bottom-2 right-3"
+        href={{ pathname: "/articleDetail", query: {apiUrl} }}
+      >
+        <button className="px-6 py-2 bg-stone-200 rounded hover:bg-orange-300 duration-200 font-medium">
+          Details
+        </button>
       </Link>
     </div>
   );

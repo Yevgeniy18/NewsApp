@@ -1,7 +1,7 @@
 export interface NewsArticle {
   id: string;
   webTitle: string;
-  datePublished: string;
+  webPublicationDate: string;
   apiUrl: string;
   fields?: {
     thumbnail: string;
@@ -21,7 +21,17 @@ export interface SearchData {
 }
 
 export interface ArticleDetail {
+  content: {
+    headline: string;
+    webPublicationDate: string;
+    body: string;
+    thumbnail: string;
+  };
+}
+
+export interface ArticleProps {
   headline: string;
-  firstPublicationDate: string;
-  bodyText: string;
+  webPublicationDate: string;
+  body: string;
+  thumbnail: string;
 }

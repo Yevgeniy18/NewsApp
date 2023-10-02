@@ -4,6 +4,8 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { RootState, AppDispatch } from "@/store";
 import { useSelector, useDispatch } from "react-redux";
 import { getArticles } from "@/redux/articles/articles";
+import Head from "next/head";
+import {BsSearch} from "react-icons/bs"
 
 const SearchNews = () => {
   const articlesInfo = useSelector((state: RootState) => state.articles);
@@ -18,17 +20,12 @@ const SearchNews = () => {
   });
 
   useEffect(() => {
-
     if (changeValue) {
-      console.log("more");
-      console.log(searchQuery);
       dispatch(getArticles(searchQuery));
       setChangeValue(false);
     }
 
     if (changeValue) {
-      console.log("more");
-      console.log(searchQuery);
       dispatch(getArticles(searchQuery));
       setChangeValue(false);
     }
@@ -65,70 +62,82 @@ const SearchNews = () => {
   };
 
   return (
-    <main className="w-full flex flex-col justify-center items-center pt-4">
-      <form
-        className="xs:p-1 sm:p-2 md:p-6 p-10 bg-zinc-600 rounded sticky top-0"
-        onSubmit={handleSubmit}
-      >
-        <div className="flex justify-center">
-          <label htmlFor="searchQuery"></label>
-          <input
-            className="text-black p-2 w-96 outline-none border-none rounded"
-            type="text"
-            id="searchQuery"
-            name="searchQuery"
-            placeholder="latest, sports..."
-            value={searchQuery?.query}
-            onChange={(e) =>
-              setSearchQuery({
-                query: e.target.value,
-                items: searchQuery.items,
-                sortBy: searchQuery.sortBy,
-              })
-            }
-          />
+    <>
+      <Head>
+        <title key="title">News App Technical Assignment</title>
+      </Head>
 
-          <button
-            className="ml-4 py-2 px-4 bg-slate-200 rounded"
-            type="submit"
-            disabled={loading}
-          >
-            Find
-          </button>
-        </div>
-        <div className="flex justify-between w-9/12 items-end mt-3">
-          <div className="flex mr-16 w-40">
-            <select
-              className=" flex outline-none rounded w-full"
-              onChange={onChangeOrderBy}
+      <main className="w-full flex flex-col justify-center items-center pt-4">
+        <form
+          className="xs:p-1 sm:p-2 md:p-6 p-10 bg-zinc-600 rounded sticky top-5 z-50"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex justify-center">
+            <label htmlFor="searchQuery"></label>
+
+            <div className="relative flex justify-start items-center">
+              <BsSearch className="absolute left-2"/>
+            <input
+              className="text-black px-8 py-2 w-96 outline-none border-none rounded"
+              type="text"
+              id="searchQuery"
+              name="searchQuery"
+              placeholder="Поиск..."
+              value={searchQuery?.query}
+              onChange={(e) =>
+                setSearchQuery({
+                  query: e.target.value,
+                  items: searchQuery.items,
+                  sortBy: searchQuery.sortBy,
+                })
+              }
+            />
+
+
+            </div>
+    
+            <button
+              className="ml-4 py-2 px-4 bg-slate-200 rounded hover:bg-sky-400 duration-200 font-medium"
+              type="submit"
+              disabled={loading}
             >
-              <option value="relevance">Relevance</option>
-              <option value="newest">Newest</option>
-            </select>
+              Find
+            </button>
           </div>
+          <div className="flex justify-between w-9/12 items-end mt-2  ">
+            <div className="flex mr-16 w-40">
+              <select
+                className=" flex outline-none rounded w-full"
+                onChange={onChangeOrderBy}
+              >
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+              </select>
+            </div>
 
-          <div className="flex flex-col  justify-start">
-            <h3 className="text-slate-100 mb-1">Items on page</h3>
-            <select className="outline-none rounded" onChange={onChangeItems}>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-            </select>
+            <div className="flex flex-col  justify-start">
+              <h3 className="text-slate-100 mb-1">Items on page</h3>
+              <select className="outline-none rounded" onChange={onChangeItems}>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+            </div>
           </div>
+        </form>
+
+        <div className="d-flex flex-column align-items-center mt-8">
+          {loading ? (
+            <h1>Loading</h1>
+          ) : error ? (
+            <p>Something went wrong, try again</p>
+          ) : (
+            articles && <ArticlesContainer articles={articles} />
+          )}
         </div>
-      </form>
-
-      <div className="d-flex flex-column align-items-center mt-8">
-        {loading ? (
-          <h1>Loading</h1>
-        ) : error ? (
-          <p>Something went wrong, try again</p>
-        ) : (
-          articles && <ArticlesContainer articles={articles} />
-        )}
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 
