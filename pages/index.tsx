@@ -82,7 +82,7 @@ const SearchNews = () => {
               type="text"
               id="searchQuery"
               name="searchQuery"
-              placeholder="Поиск..."
+              placeholder="Type 'Sport' for instance..."
               value={searchQuery?.query}
               onChange={(e) =>
                 setSearchQuery({
